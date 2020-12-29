@@ -11,21 +11,33 @@ class Piece():
         self.name = '' #character for the piece
         self.coords = (x , y)
         
-
+    """
+    Will take in a tuple for the move that is trying to be made
+    Returns true if its within the list
+    """
     def valid_move(self, move):
-        if(move in self.attacks):
-            return True
-        return False
+        return move in self.moves
+        
+    """
+    Logging
+    """
     def print_moves(self):
         for move in self.moves:
             print(move)
-    
+    """
+    More Logging
+    """
     def dump_coords(self):
         print(self.coords)
     
+    """
+    Currently mainly for console version
+    """
     def move(self, num):
+        
         print(self.coords)
         self.coords = tuple(map(operator.add,  self.coords, self.moves[num]))
+    
         
 
         
@@ -33,7 +45,7 @@ class Pawn(Piece):
 
     def __init__(self,x,y):
         Piece.__init__(self,x,y)
-        self.moves = [(1,0),(1,-1),(1,1)]
+        self.moves = [(1,0),(1,-1),(1,1), (2,0)]
         self.attacks = [1,2]
         self.name = 'P'
 
@@ -60,6 +72,13 @@ class King(Piece):
         self.moves = [(0,1),(1,0),(-1,0),(0,-1),(1,1),(-1,-1),(-1,1),(1,-1)]
         self.attacks = []
         self.name = 'R'
+    """
+    Will need to evaluate if an attack is on the king
+    """
+    def in_check(self):
+        pass
+
+
     
 
 
