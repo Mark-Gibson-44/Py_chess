@@ -35,8 +35,13 @@ class Piece():
     """
     def move(self, num):
         
-        print(self.coords)
+        
         self.coords = tuple(map(operator.add,  self.coords, self.moves[num]))
+        
+    def gui_move(self, num):
+        
+        
+        self.coords = tuple(num)
     
         
 
@@ -45,7 +50,7 @@ class Pawn(Piece):
 
     def __init__(self,x,y):
         Piece.__init__(self,x,y)
-        self.moves = [(1,0),(1,-1),(1,1), (2,0)]
+        self.moves = [(0,1),(-1,1),(1,1), (2,0)]
         self.attacks = [1,2]
         self.name = 'P'
 

@@ -7,12 +7,34 @@ Will use a Board class to act as a model for the location of the pieces
 """
 class View():
 
+
+    """
+    Initialises all possible Gui events
+    """
+    def init_events(self):
+        pass
     """
     Will generate the starting pieces done via the board Initialisation
     """
     def init_pieces(self):
+        for i in self.b.white:
+            col = 'white'
+            x = (i.coords[0] + 1) * 75 - 37
+            y = (i.coords[1] + 1) * 75 - 37
+            t = i.name
+            p = self.canvas.create_text(x, y, text=t, font=self.fontStyle, fill=col)
+            self.pieces_img.append(p)
+        for k in self.b.black:
+            col = 'black'
+            x = (k.coords[0] + 1) * 75 - 37
+            y = (k.coords[1] + 1) * 75 - 37
+            t = k.name
+            p = self.canvas.create_text(x, y, text=t, font=self.fontStyle, fill=col)
+            self.pieces_img.append(p)
+        """
         pawn1 = self.canvas.create_text(37, 75 + 37, text='P', font=self.fontStyle, fill='blue')
         self.pieces_img.append(pawn1)
+        """
 
     """
     Draws the squares on the gui
@@ -32,6 +54,7 @@ class View():
             coord[2] = 75
             coord[1] = coord[1] + space
             coord[3] = coord[3] + space
+        self.init_pieces()
     
         for i in range (4):
     
@@ -51,32 +74,51 @@ class View():
     """
     def select_piece(self, event):
         
-        self.canvas.delete(self.highlighted_move)
-        x = m.floor((event.x /75 +  1)) * 75 - 37
-        y = m.floor((event.y /75 +  1)) * 75 - 37
-      
-        if ((m.floor((event.x /75)),m.floor((event.y /75)))) in self.positions:
+        if self.highlighted_move[0] is not None:
             
-            self.highlighted_move = self.canvas.create_text(x, y, text='P', font=self.fontStyle, fill='red')
-
-
-    def move_piece(self ,event):
-        self.canvas.delete(self.pieces_img.pop())
-        if(False):
+            self.canvas.delete(self.highlighted_move[0])
+            self.highlighted_move = None, None
             return
         
+        #self.canvas.delete(self.highlighted_move)
         x = m.floor((event.x /75 +  1)) * 75 - 37
         y = m.floor((event.y /75 +  1)) * 75 - 37
-      
-        new_move = self.canvas.create_text(x, y, text='P', font=self.fontStyle, fill='blue')
-        self.pieces_img.append(new_move)
+        
+        occupied, position = (self.b.piece_at(m.floor((event.x /75)),m.floor((event.y /75))))
+        if occupied:
+            self.highlighted_move = self.canvas.create_text(x, y, text='P', font=self.fontStyle, fill='red'),position
+        
 
+    def logger(self):
+        self.b.dump_pieces()
+
+    def move_piece(self ,event):
+        
+      
+        if self.highlighted_move[0] is not None:
+            self.logger()
+            x = m.floor((event.x /75))
+            y = m.floor((event.y /75)) 
+            self.b.gui_move_piece(True, self.highlighted_move[1], (x,y))
+            self.canvas.delete('all')
+            self.draw_pieces()
+            #self.pieces_img[self.highlighted_move[1]].delete()
+            #update()#either update function or delete and add
+            #self.pieces_img.append(new_move)
+
+        
+      
+        
+        
+
+    
 
     def __init__(self):
+        self.b = Board()
         self.top = Tk()
         self.w = 600#Width of Board
         self.h = 600#Height of Board
-        self.bgr = 'black'
+        self.bgr = 'green'
         self.positions =[(0,1) ]#Temp for testing
         self.canvas = Canvas(self.top, bg=self.bgr, width = self.w, height = self.h)
         self.pieces_img = []#Will be a list of canvas texts maybe not
@@ -85,10 +127,14 @@ class View():
         self.init_pieces()
         #TODO eventually develop function that inits all binds
         self.canvas.bind('<Button-1>',self.move_piece)
-        self.canvas.bind('<Button-1>',self.select_piece)
-        self.highlighted_move = None
+        self.canvas.bind('<Button-1>',self.select_piece, add=True)
+        
+        self.highlighted_move = None, None
+        self.selected_piece = None
 
     def play(self):
+        
+        
         self.canvas.pack()
         self.top.mainloop()
 

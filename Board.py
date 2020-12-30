@@ -7,8 +7,8 @@ class Board():
     """
     def add_Pawns(self):
         for i in range (8):
-            pawn = Pawn(1,i)
-            pawn2 = Pawn(6,i)
+            pawn = Pawn(i,1)
+            pawn2 = Pawn(i,6)
             self.white.append(pawn)
             self.black.append(pawn2)
 
@@ -17,11 +17,11 @@ class Board():
         if colour:
             row_num = 7
         
-        k1 = Knight(row_num,1)
-        k2 = Knight(row_num,6)
+        k1 = Knight(1,row_num)
+        k2 = Knight(6,row_num)
         
-        r1 = Rook(row_num,0)
-        r2 = Rook(row_num,7)
+        r1 = Rook(0,row_num)
+        r2 = Rook(7,row_num)
         if colour:
             self.black.append(k1)
             self.black.append(k2)
@@ -52,6 +52,21 @@ class Board():
         self.add_Pawns()
         self.add_backrow()
         self.add_backrow(True)
+    
+    """
+    Function used to determine if piece exists in a given position
+    """
+    def piece_at(self, x, y):
+        
+        for i in self.white:
+            if i.coords == (x,y):
+                
+                return True, i
+        for k in self.black:
+            if k.coords == (x,y):
+                return True, k
+        return False, None
+            
                 
     def display_coords(self):
        
@@ -69,12 +84,26 @@ class Board():
                 
                 if k.coords == i:
                     self.block[k.coords[0]][k.coords[1]] = k.name
-                    
+
+    #boolean Tuple Tuple
+    def gui_move_piece(self, colour,  position, move_choice):
+        
+        
+       
+        if colour:
+            obj = self.white.index(position)
+            self.white[obj].gui_move(move_choice)
+            return
+        obj2 = self.black.index(position)
+        self.black[obj2].gui_move(move_choice)
+        pass
+
     def move_piece(self, piece_num, move_index):
         self.pieces[piece_num].move(move_index)
     def dump_pieces(self):
-        for i in range(len(self.pieces)):
-            print('Piece :%s at index %s at position(%s)'% (self.pieces[i].name, i, self.pieces[i].coords))
+        for i in range(len(self.white)):
+            print('White Piece :%s at index %s at position(%s)'% (self.white[i].name, i, self.white[i].coords))
+
             
         
     
@@ -88,13 +117,13 @@ print('\n New Board \n')
 #x.move_piece(17,1)
 x.show_board()
 x.display_coords()
-
-while 1:
+x.piece_at(1,1)
+"""while 1:
     
     x.dump_pieces()
     selected = input('Which piece to move')
     m = input('Where to move piece')
     x.move_piece(int(selected), int(m))
     x.show_board()
-    x.display_coords()
+    x.display_coords()"""
             
