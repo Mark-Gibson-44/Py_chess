@@ -2,6 +2,31 @@ from Pieces import *
 import os
 
 class Board():
+
+    def piece_colour(self, move):
+        
+        for i in self.white:
+            if move == i.coords:
+                return True
+        for k in self.black:
+            if move == k.coords:
+                return False
+
+    def take(self, move, col):
+        print(self.behind)
+        if col:
+            
+            for i in self.black:
+                if i.coords == move:
+                    
+                    self.black.remove(i)
+        for k in self.white:
+            if i.coords == move:
+                
+                self.white.remove(k)
+        return
+
+
     """
     Pawns can be added iteratively as all on same row
     """
@@ -22,20 +47,44 @@ class Board():
         
         r1 = Rook(0,row_num)
         r2 = Rook(7,row_num)
+        b1 = Bishop(2,row_num)
+        b2 = Bishop(5,row_num)
+        Q = Queen(3,row_num)
+        king = King(4,row_num)
         if colour:
             self.black.append(k1)
             self.black.append(k2)
-        
+            self.black.append(b1)
+            self.black.append(b2)
             self.black.append(r1)
             self.black.append(r2)
+            self.black.append(king)
+            self.black.append(Q)
             return
 
         self.white.append(k1)
         self.white.append(k2)
-        
+        self.white.append(b1)
+        self.white.append(b2)
         self.white.append(r1)
         self.white.append(r2)
+        self.white.append(Q)
+        self.white.append(king)
         
+    """
+    Function To make sure that the a piece being taken isn't behind another piece
+    """
+    def behind(self, piece, move):
+        start = piece.moves.index(move)
+        it = 1
+        move_val = move[0] + move[1]
+        comp = piece[start-it][0] + piece[start-it][1]
+        while(comp < move_val):
+            if self.piece_at(piece[start-it][0], piece[start-it][1]):
+                return True
+            it = it + 1
+            comp = piece[start-it][0] + piece[start-it][1]
+
 
 
     def __init__(self):
@@ -101,8 +150,10 @@ class Board():
     def move_piece(self, piece_num, move_index):
         self.pieces[piece_num].move(move_index)
     def dump_pieces(self):
-        for i in range(len(self.white)):
-            print('White Piece :%s at index %s at position(%s)'% (self.white[i].name, i, self.white[i].coords))
+        for i in range(len(self.black)):
+            print('Black Piece :%s at index %s at position(%s)'% (self.black[i].name, i, self.black[i].coords))
+
+    
 
             
         

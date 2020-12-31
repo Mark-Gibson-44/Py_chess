@@ -31,10 +31,7 @@ class View():
             t = k.name
             p = self.canvas.create_text(x, y, text=t, font=self.fontStyle, fill=col)
             self.pieces_img.append(p)
-        """
-        pawn1 = self.canvas.create_text(37, 75 + 37, text='P', font=self.fontStyle, fill='blue')
-        self.pieces_img.append(pawn1)
-        """
+       
 
     """
     Draws the squares on the gui
@@ -54,7 +51,7 @@ class View():
             coord[2] = 75
             coord[1] = coord[1] + space
             coord[3] = coord[3] + space
-        self.init_pieces()
+        
     
         for i in range (4):
     
@@ -67,6 +64,7 @@ class View():
             coord2[2] = 150
             coord2[1] = coord2[1] + space
             coord2[3] = coord2[3] + space
+        self.init_pieces()
         self.canvas.pack()
     """
     Will need a boolean to determine whether a piece is being moved or selected
@@ -80,13 +78,13 @@ class View():
             self.highlighted_move = None, None
             return
         
-        #self.canvas.delete(self.highlighted_move)
+       
         x = m.floor((event.x /75 +  1)) * 75 - 37
         y = m.floor((event.y /75 +  1)) * 75 - 37
-        
+        self.select_piece = self.b.piece_colour((m.floor(event.x/75), m.floor(event.y/75)))
         occupied, position = (self.b.piece_at(m.floor((event.x /75)),m.floor((event.y /75))))
         if occupied:
-            self.highlighted_move = self.canvas.create_text(x, y, text='P', font=self.fontStyle, fill='red'),position
+            self.highlighted_move = self.canvas.create_text(x, y, text=position.name, font=self.fontStyle, fill='red'),position
         
 
     def logger(self):
@@ -94,17 +92,17 @@ class View():
 
     def move_piece(self ,event):
         
-      
+        
         if self.highlighted_move[0] is not None:
             self.logger()
             x = m.floor((event.x /75))
-            y = m.floor((event.y /75)) 
-            self.b.gui_move_piece(True, self.highlighted_move[1], (x,y))
+            y = m.floor((event.y /75))
+            self.b.take((x,y), self.select_piece)
+            
+            self.b.gui_move_piece(self.select_piece, self.highlighted_move[1], (x,y))
             self.canvas.delete('all')
             self.draw_pieces()
-            #self.pieces_img[self.highlighted_move[1]].delete()
-            #update()#either update function or delete and add
-            #self.pieces_img.append(new_move)
+            
 
         
       
