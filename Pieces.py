@@ -5,14 +5,15 @@ class Piece():
     """
     Abstract class to be a base class for all pieces
     """
-    def __init__(self, x, y):
+    def __init__(self, x, y, c):
         self.moves = []#List of tuples containing the valid moves the piece can do
         self.attacks = []#List of indexes of moves to indicate which moves are valid attacks
         self.name = '' #character for the piece
         self.coords = (x , y)
+        self.colour = c#Should simplify things
 
 
-    
+   
 
 
     """
@@ -70,32 +71,32 @@ class Piece():
         
 class Pawn(Piece):
 
-    def __init__(self,x,y):
-        Piece.__init__(self,x,y)
+    def __init__(self,x,y, c =False):
+        Piece.__init__(self,x,y,c)
         self.moves = [(0,1),(-1,1),(1,1), (0,2)]
         self.attacks = [1,2]
         self.name = 'P'
 
 class Knight(Piece):
 
-    def __init__(self,x,y):
-        Piece.__init__(self,x,y)
+    def __init__(self,x,y,c =False):
+        Piece.__init__(self,x,y,c)
         self.moves = [(-2,1),(2,1),(-1,2), (1,2), (-2,-1),(-1,-2),(1,-2),(-2,1)]
         self.attacks = []
         self.name = 'K'
     
 class Rook(Piece):
 
-    def __init__(self,x,y):
-        Piece.__init__(self,x,y)
+    def __init__(self,x,y,c =False):
+        Piece.__init__(self,x,y,c)
         self.moves = [(0,1),(0,2),(0,3),(0,4),(0,5),(0,6),(0,7),(0,-1),(0,-2),(0,-3),(0,-4),(0,-5),(0,-6),(0,-7), (1,0),(2,0),(3,0),(4,0),(5,0),(6,0),(7,0),(-1,0),(-2,0),(-3,0),(-4,0),(-5,0),(-6,0),(-7,0)]
         self.attacks = []
         self.name = 'R'
 
 class King(Piece):
 
-    def __init__(self,x,y):
-        Piece.__init__(self,x,y)
+    def __init__(self,x,y,c =False):
+        Piece.__init__(self,x,y,c)
         self.moves = [(0,1),(1,0),(-1,0),(0,-1),(1,1),(-1,-1),(-1,1),(1,-1)]
         self.attacks = []
         self.name = 'G'
@@ -106,8 +107,8 @@ class King(Piece):
         pass
 class Queen(Piece):
 
-    def __init__(self,x,y):
-        Piece.__init__(self,x,y)
+    def __init__(self,x,y,c =False):
+        Piece.__init__(self,x,y,c)
         self.moves = [(1,1),(2,2),(3,3),(4,4),(5,5),(6,6),(7,7),(8,8),\
                         (-1,-1),(-2,-2),(-3,-3),(-4,-4),(-5,-5),(-6,-6),(-7,-7),(-8,-8),\
                             (-1,1),(-2,2),(-3,3),(-4,4),(-5,5),(-6,6),(-7,7),(-8,8),\
@@ -126,8 +127,8 @@ class Queen(Piece):
 
 class Bishop(Piece):
 
-    def __init__(self,x,y):
-        Piece.__init__(self,x,y)
+    def __init__(self,x,y,c =False):
+        Piece.__init__(self,x,y,c)
         self.moves = [(1,1),(2,2),(3,3),(4,4),(5,5),(6,6),(7,7),(8,8),\
                         (-1,-1),(-2,-2),(-3,-3),(-4,-4),(-5,-5),(-6,-6),(-7,-7),(-8,-8),\
                             (-1,1),(-2,2),(-3,3),(-4,4),(-5,5),(-6,6),(-7,7),(-8,8),\

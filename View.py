@@ -97,6 +97,7 @@ class View():
             self.logger()
             x = m.floor((event.x /75))
             y = m.floor((event.y /75))
+           
             self.b.take((x,y), self.select_piece)
             
             self.b.gui_move_piece(self.select_piece, self.highlighted_move[1], (x,y))

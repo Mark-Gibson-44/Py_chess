@@ -13,16 +13,16 @@ class Board():
                 return False
 
     def take(self, move, col):
-        print(self.behind)
+        
         if col:
             
             for i in self.black:
                 if i.coords == move:
-                    
+                    #self.behind(i, move)
                     self.black.remove(i)
         for k in self.white:
-            if i.coords == move:
-                
+            if k.coords == move:
+                #self.behind(k, move)
                 self.white.remove(k)
         return
 
@@ -32,7 +32,7 @@ class Board():
     """
     def add_Pawns(self):
         for i in range (8):
-            pawn = Pawn(i,1)
+            pawn = Pawn(i,1, True)
             pawn2 = Pawn(i,6)
             self.white.append(pawn)
             self.black.append(pawn2)
@@ -42,15 +42,15 @@ class Board():
         if colour:
             row_num = 7
         
-        k1 = Knight(1,row_num)
-        k2 = Knight(6,row_num)
+        k1 = Knight(1,row_num, colour)
+        k2 = Knight(6,row_num, colour)
         
-        r1 = Rook(0,row_num)
-        r2 = Rook(7,row_num)
-        b1 = Bishop(2,row_num)
-        b2 = Bishop(5,row_num)
-        Q = Queen(3,row_num)
-        king = King(4,row_num)
+        r1 = Rook(0,row_num, colour)
+        r2 = Rook(7,row_num, colour)
+        b1 = Bishop(2,row_num, colour)
+        b2 = Bishop(5,row_num, colour)
+        Q = Queen(3,row_num, colour)
+        king = King(4,row_num, colour)
         if colour:
             self.black.append(k1)
             self.black.append(k2)
@@ -75,15 +75,20 @@ class Board():
     Function To make sure that the a piece being taken isn't behind another piece
     """
     def behind(self, piece, move):
+        
+        
+        print(piece.coords)
+        print(move)
         start = piece.moves.index(move)
         it = 1
-        move_val = move[0] + move[1]
-        comp = piece[start-it][0] + piece[start-it][1]
+        move_val = sum(move)
+        comp = sum(piece[start-it])
         while(comp < move_val):
             if self.piece_at(piece[start-it][0], piece[start-it][1]):
                 return True
             it = it + 1
-            comp = piece[start-it][0] + piece[start-it][1]
+            comp = sum(piece[start-it])
+        return False
 
 
 
@@ -142,9 +147,11 @@ class Board():
         if colour:
             obj = self.white.index(position)
             self.white[obj].gui_move(move_choice)
+            self.pieces = self.black + self.white
             return
         obj2 = self.black.index(position)
         self.black[obj2].gui_move(move_choice)
+        self.pieces = self.black + self.white
         pass
 
     def move_piece(self, piece_num, move_index):
